@@ -1,14 +1,31 @@
 import * as THREE from 'three';
 import { WEDGES } from './wheel-data.js';
 
+const TWO_PI = Math.PI * 2;
 const RADIUS = 5;
-const WEDGE_ANGLE = (Math.PI * 2) / WEDGES.length;
+const WEDGE_ANGLE = TWO_PI / WEDGES.length;
+const SPIN_DURATION = 5000; // milliseconds
 const GOLD = '#d4a017';
 
 // Angle of wedge i's center on the wheel face. Wedge 0 is at the top (90 degrees)
 // and the rest go clockwise from there.
 function wedgeCenterAngle(i) {
   return Math.PI / 2 - i * WEDGE_ANGLE;
+}
+
+// Wheel rotation that puts wedge `index` under the pointer, a few full clockwise
+// turns past the current rotation.
+function stopRotationFor(index, currentRotation) {
+  // Land somewhere inside the wedge instead of always dead center.
+  const offset = (Math.random() - 0.5) * WEDGE_ANGLE * 0.5;
+  const rotation = index * WEDGE_ANGLE + offset;
+  const extraTurns = 4 + Math.floor(Math.random() * 3);
+  const fullTurns = Math.floor((currentRotation - rotation) / TWO_PI) - extraTurns;
+  return rotation + fullTurns * TWO_PI;
+}
+
+function easeOut(t) {
+  return 1 - Math.pow(1 - t, 4);
 }
 
 // Paints the wedges and their labels onto a canvas used as the wheel's texture.
@@ -127,7 +144,7 @@ export function createWheel(container) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-  camera.position.set(0, -1.5, 17);
+  camera.position.set(0, -1.2, 15.5);
   camera.lookAt(0, 0, 0);
 
   scene.add(new THREE.AmbientLight('#ffffff', 1.2));
@@ -155,4 +172,27 @@ export function createWheel(container) {
   resize();
 
   renderer.setAnimationLoop(() => renderer.render(scene, camera));
+
+  // Spins the wheel and resolves once wedge `index` has stopped under the pointer.
+  function spinTo(index) {
+    const start = spinner.rotation.z;
+    const end = stopRotationFor(index, start);
+    const startTime = performance.now();
+
+    return new Promise((resolve) => {
+      function step(now) {
+        const t = Math.min((now - startTime) / SPIN_DURATION, 1);
+        spinner.rotation.z = start + (end - start) * easeOut(t);
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          spinner.rotation.z = end % TWO_PI;
+          resolve();
+        }
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  return { spinTo };
 }
