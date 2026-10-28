@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheel of Fortune</title>
+  <link rel="icon" href="data:,">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle, #1a237e, #0d0d2b);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+
+    h1 {
+      margin: 8px 0;
+      color: #ffd54f;
+    }
+
+    #category {
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    #board {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 92px;
+      padding: 10px 16px;
+      background: #1b5e20;
+      border: 4px solid #ffd54f;
+      border-radius: 8px;
+    }
+
+    .board-row {
+      display: flex;
+      gap: 4px;
+    }
+
+    .tile {
+      width: 34px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: bold;
+      background: #ffffff;
+      color: #000000;
+      border-radius: 3px;
+    }
+
+    .tile.hidden-letter {
+      background: #e8f5e9;
+    }
+
+    .tile.space {
+      background: transparent;
+    }
+
+    #play-area {
+      flex: 1;
+      display: flex;
+      width: 100%;
+      min-height: 0;
+    }
+
+    #wheel-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    #wheel {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+    }
+
+    #controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 24px;
+    }
+
+    #spin-button {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 12px 48px;
+      border: none;
+      border-radius: 8px;
+      background: #ffd54f;
+      color: #1a237e;
+      cursor: pointer;
+    }
+
+    #spin-button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    #result {
+      font-size: 28px;
+      font-weight: bold;
+      min-height: 34px;
+    }
+
+    #side-panel {
+      width: 360px;
+      padding: 0 20px 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #players {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .player {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid transparent;
+    }
+
+    .player.current {
+      background: rgba(255, 213, 79, 0.25);
+      border-color: #ffd54f;
+    }
+
+    .player-name {
+      font-weight: bold;
+    }
+
+    #message {
+      margin: 0;
+      min-height: 40px;
+      color: #ffd54f;
+    }
+
+    #side-panel form {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #side-panel label {
+      width: 110px;
+    }
+
+    #side-panel input {
+      flex: 1;
+      min-width: 0;
+      font-size: 18px;
+      padding: 6px;
+      text-transform: uppercase;
+    }
+
+    #side-panel button {
+      font-size: 16px;
+      padding: 7px 12px;
+      cursor: pointer;
+    }
+
+    #side-panel h2 {
+      margin: 6px 0 0;
+      font-size: 18px;
+    }
+
+    #used-letters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .used-letter {
+      width: 24px;
+      text-align: center;
+      padding: 3px 0;
+      border-radius: 3px;
+      background: #ffffff;
+      color: #1a237e;
+      font-weight: bold;
+    }
+
+    .used-letter.used {
+      background: #616161;
+      color: #9e9e9e;
+      text-decoration: line-through;
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Wheel of Fortune</h1>
+  <section>
+    <div id="category"></div>
+    <div id="board"></div>
+  </section>
+
+  <div id="play-area">
+    <div id="wheel-column">
+      <div id="wheel"></div>
+      <div id="controls">
+        <button id="spin-button">Spin</button>
+        <div id="result"></div>
+      </div>
+    </div>
+
+    <aside id="side-panel">
+      <ul id="players"></ul>
+      <p id="message"></p>
+
+      <form id="consonant-form">
+        <label for="consonant-input">Consonant</label>
+        <input id="consonant-input" maxlength="1" autocomplete="off">
+        <button>Guess</button>
+      </form>
+
+      <form id="vowel-form">
+        <label for="vowel-input">Vowel ($500)</label>
+        <input id="vowel-input" maxlength="1" autocomplete="off">
+        <button>Buy</button>
+      </form>
+
+      <form id="solve-form">
+        <label for="solve-input">Solve</label>
+        <input id="solve-input" autocomplete="off">
+        <button>Solve</button>
+      </form>
+
+      <button id="next-puzzle-button" hidden>Next Puzzle</button>
+
+      <h2>Used Letters</h2>
+      <div id="used-letters"></div>
+    </aside>
+  </div>
+
+  <script type="module" src="main.js"></script>
+  <script type="module" src="game.js"></script>
+</body>
+</html>

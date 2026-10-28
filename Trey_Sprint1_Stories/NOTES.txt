@@ -1,0 +1,47 @@
+Fortune Tellers: Wheel of Fortune - Sprint 1
+Trajan Womack
+
+My stories
+----------
+
+Story 2 - Choose a clue and display the puzzle board
+  puzzles.js: PUZZLES, the list of category and puzzle pairs.
+  board.js: showPuzzle() builds the board, splitIntoRows() wraps whole words
+    onto rows of up to 14 tiles, createTile() makes hidden letter tiles and
+    shows spaces and punctuation right away.
+  game.js: startPuzzle() picks a random puzzle and shows it. It also adds 1
+    to the round counter and calls setRound() from main.js so the wheel
+    shows that round's top value (the round values are part of story 3).
+  index.html: #category and #board elements, .tile styles.
+
+Story 7 - Guess a consonant and update results
+  game.js: guessConsonant() checks the letter, reveals it and adds
+    letter count x wedge value to the player's round total. A miss calls
+    endTurn() so the next player goes.
+  board.js: revealLetter() flips matching tiles and returns the count.
+  players.js: addToRoundTotal().
+
+Story 8 - Buy a vowel and update results
+  game.js: buyVowel() and VOWEL_COST ($500). The player has to have at least
+    $500 in their round total. A vowel that isn't in the puzzle still costs
+    $500 and passes the turn.
+  board.js: hasHiddenVowels() checks if any vowel tile is still hidden.
+    Once the last vowel is revealed, the game says "There are no more vowels
+    in this puzzle." and the vowel box is turned off with "No vowels left".
+    A vowel guess after that is rejected and no money is taken.
+
+Story 11 - Check the puzzle solution
+  board.js: isCorrectSolution() compares letters only, so case, spaces and
+    punctuation don't matter. revealAll() shows the whole board.
+  game.js: solvePuzzle() reveals the board on a correct solve and passes
+    the turn on a wrong one.
+
+How to run
+----------
+The game uses JavaScript modules, so it has to be served over HTTP.
+From this folder run:
+
+  python -m http.server 8000
+
+then open http://localhost:8000 in a browser. Three.js loads from a CDN,
+so you need an internet connection.
