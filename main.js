@@ -1,13 +1,14 @@
 import { createWheel } from './wheel.js';
-import { WEDGES } from './wheel-data.js';
+import { WEDGES, wedgesForRound } from './wheel-data.js';
 
 const wheel = createWheel(document.getElementById('wheel'));
 const spinButton = document.getElementById('spin-button');
 const resultText = document.getElementById('result');
 let isSpinning = false;
+let wedges = WEDGES;
 
 function randomWedgeIndex() {
-  return Math.floor(Math.random() * WEDGES.length);
+  return Math.floor(Math.random() * wedges.length);
 }
 
 function describe(wedge) {
@@ -28,12 +29,18 @@ export async function spinWheel(index = randomWedgeIndex()) {
 
   await wheel.spinTo(index);
 
-  const wedge = WEDGES[index];
+  const wedge = wedges[index];
   isSpinning = false;
   spinButton.disabled = false;
   resultText.textContent = describe(wedge);
   document.dispatchEvent(new CustomEvent('spinresult', { detail: { wedge, index } }));
   return wedge;
+}
+
+// Switches the wheel to the values for this round.
+export function setRound(round) {
+  wedges = wedgesForRound(round);
+  wheel.setWedges(wedges);
 }
 
 spinButton.addEventListener('click', () => spinWheel());

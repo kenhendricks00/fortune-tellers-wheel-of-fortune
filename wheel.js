@@ -29,7 +29,7 @@ function easeOut(t) {
 }
 
 // Paints the wedges and their labels onto a canvas used as the wheel's texture.
-function drawWheelFace() {
+function drawWheelFace(wedges) {
   const size = 1024;
   const center = size / 2;
   const canvas = document.createElement('canvas');
@@ -37,7 +37,7 @@ function drawWheelFace() {
   canvas.height = size;
   const ctx = canvas.getContext('2d');
 
-  WEDGES.forEach((wedge, i) => {
+  wedges.forEach((wedge, i) => {
     // Canvas angles run clockwise, so flip the sign of the math angle.
     const angle = -wedgeCenterAngle(i);
 
@@ -86,7 +86,7 @@ function createSpinner() {
 
   const face = new THREE.Mesh(
     new THREE.CircleGeometry(RADIUS, 128),
-    new THREE.MeshBasicMaterial({ map: drawWheelFace() })
+    new THREE.MeshBasicMaterial({ map: drawWheelFace(WEDGES) })
   );
   spinner.add(face);
 
@@ -159,6 +159,7 @@ export function createWheel(container) {
   scene.add(stand);
 
   const spinner = createSpinner();
+  const face = spinner.children[0];
   stand.add(spinner);
   stand.add(createPointer());
 
@@ -168,8 +169,7 @@ export function createWheel(container) {
     camera.aspect = clientWidth / clientHeight;
     camera.updateProjectionMatrix();
   }
-  window.addEventListener('resize', resize);
-  resize();
+  new ResizeObserver(resize).observe(container);
 
   renderer.setAnimationLoop(() => renderer.render(scene, camera));
 
@@ -194,5 +194,12 @@ export function createWheel(container) {
     });
   }
 
-  return { spinTo };
+  // Repaints the wheel face, for example when a new round changes the top value.
+  function setWedges(wedges) {
+    face.material.map.dispose();
+    face.material.map = drawWheelFace(wedges);
+    face.material.needsUpdate = true;
+  }
+
+  return { spinTo, setWedges };
 }

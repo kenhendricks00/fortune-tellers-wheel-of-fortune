@@ -30,7 +30,7 @@ export const WEDGES = [
   cash(500, PURPLE),
   cash(900, PINK),
   cash(550, RED),
-  cash(1000, ORANGE),
+  cash(850, ORANGE),
   cash(600, YELLOW),
   cash(700, GREEN),
   loseATurn(),
@@ -39,10 +39,22 @@ export const WEDGES = [
   cash(650, PINK),
   cash(900, RED),
   bankrupt(),
-  cash(1500, ORANGE),
+  cash(750, ORANGE),
   cash(550, YELLOW),
   cash(600, GREEN),
   cash(750, BLUE),
   cash(500, PURPLE),
   cash(850, PINK),
 ];
+
+// Top dollar value: $2,500 in round 1, $3,500 in rounds 2 and 3, $5,000 from round 4 on.
+export function topValue(round) {
+  if (round === 1) return 2500;
+  if (round <= 3) return 3500;
+  return 5000;
+}
+
+// The wheel for a round. Only the top wedge changes from round to round.
+export function wedgesForRound(round) {
+  return WEDGES.map((wedge, i) => (i === 0 ? cash(topValue(round), wedge.color) : wedge));
+}
