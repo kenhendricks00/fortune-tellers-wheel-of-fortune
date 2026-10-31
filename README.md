@@ -56,6 +56,8 @@ The wheel has 24 wedges: 21 cash wedges, two Bankrupt and one Lose a Turn. The c
 - `players.js` - the three players, whose turn it is, round totals and banks
 - `letters.js` - the used-letters board
 - `game.js` - round flow: round counter, spin results, consonants, vowels, solving and banking
+- `NOTES.txt` - Trajan's notes on his stories
+- `Mohamad_NOTES.txt` - Mohamad's notes on his stories
 - `README.md` - this file
 
 ## Using the spin result
@@ -84,21 +86,21 @@ Wedge types are `cash`, `bankrupt` and `lose-turn`.
 
 ## Sprint 1 stories
 
-Status as of October 28, 2026. All 11 stories work in this build.
+Status as of October 28, 2026. All 11 stories work in this build, and the code for all of them is on the GitHub main branch.
 
 | Story | Title | Owner | Points | Status |
 | ---: | --- | --- | ---: | --- |
-| 2 | Choose clue and display puzzle board | Trajan Womack | 5 | Complete (still to be committed to GitHub) |
-| 3 | Create wheel for the round | Kenneth Hendricks | 8 | Complete (on GitHub main, round values still to be committed) |
-| 4 | Control player turns | Mohamad Ghazia | 5 | Complete (still to be committed to GitHub) |
-| 5 | Spin wheel and show result | Mohamad Ghazia | 3 | Complete (still to be committed to GitHub) |
+| 2 | Choose clue and display puzzle board | Trajan Womack | 5 | Complete (on GitHub main) |
+| 3 | Create wheel for the round | Kenneth Hendricks | 8 | Complete (on GitHub main) |
+| 4 | Control player turns | Mohamad Ghazia | 5 | Complete (on GitHub main, notes in Mohamad_NOTES.txt) |
+| 5 | Spin wheel and show result | Mohamad Ghazia | 3 | Complete (on GitHub main, notes in Mohamad_NOTES.txt) |
 | 6 | Animate wheel spin | Kenneth Hendricks | 8 | Complete (on GitHub main) |
-| 7 | Guess consonant and update results | Trajan Womack | 5 | Complete (still to be committed to GitHub) |
-| 8 | Buy vowel and update results | Trajan Womack | 3 | Complete (still to be committed to GitHub) |
-| 9 | Show previously guessed letters | Mohamad Ghazia | 2 | Complete (still to be committed to GitHub) |
-| 10 | Enforce Bankrupt and Lose a Turn | Mohamad Ghazia | 3 | Complete (still to be committed to GitHub) |
-| 11 | Check puzzle solution | Trajan Womack | 3 | Complete (still to be committed to GitHub) |
-| 12 | Bank winnings after a solved puzzle | Mohamad Ghazia | 3 | Complete (still to be committed to GitHub) |
+| 7 | Guess consonant and update results | Trajan Womack | 5 | Complete (on GitHub main) |
+| 8 | Buy vowel and update results | Trajan Womack | 3 | Complete (on GitHub main) |
+| 9 | Show previously guessed letters | Mohamad Ghazia | 2 | Complete (on GitHub main, notes in Mohamad_NOTES.txt) |
+| 10 | Enforce Bankrupt and Lose a Turn | Mohamad Ghazia | 3 | Complete (on GitHub main, notes in Mohamad_NOTES.txt) |
+| 11 | Check puzzle solution | Trajan Womack | 3 | Complete (on GitHub main) |
+| 12 | Bank winnings after a solved puzzle | Mohamad Ghazia | 3 | Complete (on GitHub main, notes in Mohamad_NOTES.txt) |
 
 That covers all 48 Sprint 1 points.
 
