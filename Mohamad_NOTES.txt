@@ -1,0 +1,40 @@
+Fortune Tellers: Wheel of Fortune - Sprint 1
+Mohamad Ghazia
+
+My stories
+----------
+
+Story 4 - Control player turns
+  players.js: the three players with a round total and a bank each.
+    currentPlayer() returns whose turn it is, passTurn() moves to the next
+    player and wraps back to Player 1, and renderPlayers() redraws the
+    player list with the current player highlighted.
+  game.js: endTurn() calls passTurn() after a miss, a wrong solve or a
+    Lose a Turn. The Next Puzzle button also passes the turn.
+
+Story 5 - Spin wheel and show result
+  game.js: handleSpinResult() listens for the spinresult event from
+    main.js. On a cash wedge it saves the wedge value and asks the player
+    to guess a consonant.
+
+Story 9 - Show previously guessed letters
+  letters.js: hasBeenGuessed() and markGuessed() track every letter called
+    this round. renderUsedLetters() shows the alphabet and greys out used
+    letters, and clearGuessedLetters() resets it when a new puzzle starts.
+
+Story 10 - Enforce Bankrupt and Lose a Turn
+  players.js: goBankrupt() sets the current player's round total to $0.
+    Their bank is not touched.
+  game.js: handleSpinResult() calls goBankrupt() and ends the turn on
+    Bankrupt, and just ends the turn on Lose a Turn.
+
+Story 12 - Bank winnings after a solved puzzle
+  players.js: bankWinnings() moves the solver's round total into their
+    bank and sets every round total back to $0.
+  game.js: after a correct solve, the Next Puzzle button passes the turn
+    and starts the next round.
+
+Note
+----
+The code for these stories was first added to main as part of Trajan's
+Sprint 1 commit. This commit adds my notes so my stories are on file.
